@@ -2,7 +2,7 @@ import os
 from typing import Any
 from os import path as osp
 
-import argparse
+import click
 
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import LearningRateMonitor, RichProgressBar
@@ -13,10 +13,12 @@ from src.datamodule import OCRDM
 from src.lightning_module import OCRModule
 
 
-def arg_parse() -> Any:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("config_file", type=str, help="config file")
-    return parser.parse_args()
+@click.command()
+@click.argument('config_path')
+def main(config_path: str):
+    seed_everything(42, workers=True)
+    config = Config.from_yaml(config_path)
+    train(config)
 
 
 def train(config: Config):
@@ -41,8 +43,4 @@ def train(config: Config):
 
 
 if __name__ == '__main__':
-    args = arg_parse()
-
-    seed_everything(42, workers=True)
-    config = Config.from_yaml(args.config_file)
-    train(config)
+    main()
