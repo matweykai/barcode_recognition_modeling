@@ -1,0 +1,9 @@
+[core]
+    autostage = true
+    remote = staging_server
+[cache]
+    type = "hardlink,symlink"
+['remote "staging_server"']
+    url = ssh://91.206.15.25/home/m.ivanov/dvc_files
+    user = m.ivanov
+    keyfile = __SSH_KEY_PATH__
