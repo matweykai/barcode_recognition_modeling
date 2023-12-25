@@ -47,6 +47,13 @@ class OCRDM(LightningDataModule):
             transforms=self._valid_transforms,
         )
 
+        self.test_dataset = BarCodeDataset(
+            df=df_valid,
+            data_folder=DATA_PATH,
+            transforms=self._valid_transforms,
+            return_path=True,
+        )
+
         if self._config.num_iterations != -1:
             self.train_sampler = RandomSampler(
                 data_source=self.train_dataset,
@@ -66,6 +73,15 @@ class OCRDM(LightningDataModule):
     def val_dataloader(self) -> DataLoader:
         return DataLoader(
             dataset=self.valid_dataset,
+            batch_size=self._config.batch_size,
+            num_workers=self._config.n_workers,
+            shuffle=False,
+            pin_memory=True,
+        )
+    
+    def test_dataloader(self) -> DataLoader:
+        return DataLoader(
+            dataset=self.test_dataset,
             batch_size=self._config.batch_size,
             num_workers=self._config.n_workers,
             shuffle=False,

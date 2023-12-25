@@ -57,6 +57,7 @@ def train(config: Config):
 
     trainer.fit(model=model, datamodule=datamodule)
     trainer.validate(ckpt_path=checkpoint_callback.best_model_path, datamodule=datamodule)
+    trainer.test(ckpt_path=checkpoint_callback.best_model_path, datamodule=datamodule)
 
 
 if __name__ == '__main__':

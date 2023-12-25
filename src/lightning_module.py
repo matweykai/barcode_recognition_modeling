@@ -1,5 +1,6 @@
 import torch
 import pytorch_lightning as pl
+from pathlib import Path
 
 from src.config import Config
 from src.losses import get_losses
@@ -70,6 +71,32 @@ class OCRModule(pl.LightningModule):
             'valid_',
         )
         self._valid_metrics(log_probs, targets)
+
+    def test_step(self, batch, batch_idx):
+        images, targets, target_lengths, path_tensor = batch
+
+        for temp_ind in range(len(path_tensor)):
+            temp_img = images[temp_ind: temp_ind + 1]
+            temp_target = targets[temp_ind: temp_ind + 1]
+            temp_target_len = target_lengths[temp_ind]
+            temp_path = path_tensor[temp_ind]
+
+            log_probs = self(temp_img)
+            input_lengths = torch.IntTensor([log_probs.size(0)] * temp_img.size(0))            
+
+            obj_loss = self._calculate_loss(
+                log_probs,
+                temp_target,    
+                input_lengths,
+                temp_target_len,
+                'test_',
+            )
+
+            img_name = Path(temp_path).name
+            save_path = Path('loss_err')
+
+            with open(save_path / img_name.replace('.jpg', '.txt'), 'wt') as file:
+                file.write(str(obj_loss.item()))
 
     def on_train_epoch_start(self) -> None:
         self._train_metrics.reset()

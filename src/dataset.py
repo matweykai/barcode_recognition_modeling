@@ -16,11 +16,15 @@ class BarCodeDataset(Dataset):
         df: pd.DataFrame,
         data_folder: str,
         transforms: Optional[TRANSFORM_TYPE] = None,
+        return_path: bool = False,
     ):
         self.transforms = transforms
 
         self.crops = []
         self.codes = []
+        self.return_path = return_path
+        self.df = df
+
         for i in range(len(df)):
             image = cv2.imread(os.path.join(data_folder, df['filename'][i]))[..., ::-1]
             x1 = int(df['x_from'][i])
@@ -48,7 +52,10 @@ class BarCodeDataset(Dataset):
         if self.transforms:
             data = self.transforms(**data)
 
-        return data['image'], data['text'], data['text_length']
+        if self.return_path:
+            return data['image'], data['text'], data['text_length'], self.df['filename'][idx]
+        else:
+            return data['image'], data['text'], data['text_length']
 
     def __len__(self):
         return len(self.crops)
