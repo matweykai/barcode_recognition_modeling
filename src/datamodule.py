@@ -74,4 +74,4 @@ class OCRDM(LightningDataModule):
 
 
 def read_df(data_path: str, mode: str) -> pd.DataFrame:
-    return pd.read_csv(os.path.join(data_path, f'df_{mode}.csv'))
+    return pd.read_csv(os.path.join(data_path, f'{mode}_df.csv'))
