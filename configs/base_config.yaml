@@ -1,0 +1,45 @@
+project_name: 'OCR_PR'
+experiment_name: 'test_exp_1'
+n_epochs: 40
+accelerator: 'gpu'
+device: 0
+monitor_metric: 'valid_ctc_loss'
+monitor_mode: 'min'
+rand_seed: 0
+
+model_kwargs:
+  backbone_name: 'efficientnet_b5'
+  pretrained: true
+  cnn_output_size: 64
+  rnn_features_num: 48
+  rnn_hidden_size: 96
+  rnn_dropout: 0.1
+  rnn_bidirectional: true
+  num_classes: 11
+
+
+optimizer: 'torch.optim.AdamW'
+define: &lr 1e-3
+optimizer_kwargs:
+  lr: *lr
+  # initial_lr: *lr
+  weight_decay: 1e-5
+
+scheduler: 'torch.optim.lr_scheduler.ExponentialLR'
+scheduler_kwargs:
+  gamma: 0.9
+
+losses:
+  - name: 'ctc'
+    weight: 1.0
+    loss_fn: 'torch.nn.CTCLoss'
+    loss_kwargs: {}
+
+data_config:
+  batch_size: 32
+  num_iterations: 100
+  n_workers: 2
+  width: 416
+  height: 96
+  vocab: '0123456789'
+  text_size: 13

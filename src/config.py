@@ -26,7 +26,6 @@ class Config(BaseModel):
     experiment_name: str
     data_config: DataConfig
     n_epochs: int
-    num_classes: int
     accelerator: str
     device: int
     monitor_metric: str
@@ -37,6 +36,7 @@ class Config(BaseModel):
     scheduler: str
     scheduler_kwargs: dict
     losses: List[LossConfig]
+    rand_seed: int
 
     @classmethod
     def from_yaml(cls, path: str) -> 'Config':
