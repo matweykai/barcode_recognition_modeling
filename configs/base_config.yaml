@@ -1,5 +1,5 @@
 project_name: 'OCR_PR'
-experiment_name: 'test_exp_1'
+experiment_name: 'exp_1'
 n_epochs: 40
 accelerator: 'gpu'
 device: 0
@@ -22,7 +22,6 @@ optimizer: 'torch.optim.AdamW'
 define: &lr 1e-3
 optimizer_kwargs:
   lr: *lr
-  # initial_lr: *lr
   weight_decay: 1e-5
 
 scheduler: 'torch.optim.lr_scheduler.ExponentialLR'

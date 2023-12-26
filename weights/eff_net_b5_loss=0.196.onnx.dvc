@@ -1,0 +1,5 @@
+outs:
+- md5: 72051ef398da7b69bf733025a1674e26
+  size: 4105824
+  hash: md5
+  path: eff_net_b5_loss=0.196.onnx

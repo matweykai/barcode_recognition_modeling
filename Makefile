@@ -16,3 +16,8 @@ setup:
 train:
 	$(ACTIVATE_VENV)
 	$(CALL_CMD) src/train.py $(CONFIG_PATH)
+
+MODEL_CKPT_PATH=weights/eff_net_b5_loss=0.196.ckpt
+export_onnx:
+	$(ACTIVATE_VENV)
+	$(CALL_CMD) src/export.py $(MODEL_CKPT_PATH)
