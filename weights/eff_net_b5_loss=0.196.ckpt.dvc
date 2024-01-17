@@ -1,0 +1,5 @@
+outs:
+- md5: 0c338c2fbbc5e311f90e7703744108b5
+  size: 120706084
+  hash: md5
+  path: eff_net_b5_loss=0.196.ckpt
